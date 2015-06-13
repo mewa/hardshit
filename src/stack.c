@@ -31,6 +31,15 @@ stack* stack_pop(stack* stack, void* value) {
   return stack;
 }
 
+int stack_contains(stack* stack, void* value) {
+  while (stack) {
+    if (stack->value == value) {
+      return 0;
+    }
+    stack = stack->root;
+  }
+  return 1;
+}
 
 void stack_destroy(stack* stack) {
   free(stack);
