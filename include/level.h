@@ -3,7 +3,13 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
-struct level;
+struct level {
+  char* filename;
+  char** level;
+  int w;
+  int h;
+};
+
 typedef struct level level;
 
 ALLEGRO_BITMAP* bmpWall;

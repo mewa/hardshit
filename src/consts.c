@@ -1,3 +1,3 @@
 #include <consts.h>
 
-int const kBlockSize = 40;
+int const kBlockSize = 60;

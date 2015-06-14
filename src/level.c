@@ -11,14 +11,6 @@ extern int const kBlockSize;
 
 extern player* gPlayer;
 
-struct level {
-  char* filename;
-  stack* resStack;
-  char** level;
-  int w;
-  int h;
-};
-
 level* level_create(char* filename) {
   level* level = malloc(sizeof(level));
   level->filename = strdup(filename);
@@ -55,10 +47,10 @@ void level_load(level* level) {
 }
 
 void level_draw(level* level) {
-  printf("Drawing level `%s`\nSize %dx%d\n", level->filename, level->w, level->h);
+  //printf("Drawing level `%s`\nSize %dx%d\n", level->filename, level->w, level->h);
   for (int i = 0; i < level->h; ++i) {
     for (int j = 0; j < level->w; ++j) {
-      printf("%c", level->level[i][j]);
+      //printf("%c", level->level[i][j]);
       switch (level->level[i][j]) {
       case '#':
 	bmp_draw(bmpWall, j * kBlockSize, i * kBlockSize, kBlockSize, kBlockSize);
@@ -70,7 +62,7 @@ void level_draw(level* level) {
 	break;
       }
     }
-    printf("\n");
+    //printf("\n");
   }
 }
 

@@ -2,7 +2,7 @@ TARGET	= game
 SYMLINK	= launch
 CC 	= gcc
 
-CFLAGS	= -std=gnu99 -Wall -I$(INCDIR)
+CFLAGS	= -std=gnu99 -Wall -I$(INCDIR) -lm
 
 SRCDIR 	= src
 OBJDIR	= obj
@@ -16,7 +16,7 @@ BINARIES= $(wildcard $(BINDIR)/*)
 all: init install
 
 install: $(OBJECTS)
-	$(CC) $^ -o $(BINDIR)/$(TARGET) `pkg-config --cflags --libs allegro-5.0 allegro_image-5.0`
+	$(CC) $(CFLAGS) $^ -o $(BINDIR)/$(TARGET) `pkg-config --cflags --libs allegro-5.0 allegro_image-5.0 allegro_audio-5.0 allegro_acodec-5.0`
 
 ifeq ($(wildcard $(SYMLINK)),) # create symlink if it doesn't exist
 	ln -s $(BINDIR)/$(TARGET) $(SYMLINK)
