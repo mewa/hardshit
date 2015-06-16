@@ -3,11 +3,11 @@
 #include <level.h>
 
 struct player {
-  float x;
-  float y;
-  level* level;
-  int canJump;
-  float jumpHeight;
+	float x;
+	float y;
+	level* level;
+	int canJump;
+	float jumpHeight;
 };
 
 typedef struct player player;
@@ -28,4 +28,4 @@ void player_move_down(player* player);
 
 void player_destroy(player* player);
 
-void player_draw(player* player);
+void player_draw(player* player, level* level);

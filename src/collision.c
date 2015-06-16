@@ -9,6 +9,7 @@ int collide_circles(float x, float y, float x2, float y2) {
   float dx = x2 - x;
   float dy = y2 - y;
   float distance = sqrt((double) (dx * dx + dy * dy));
+  distance -= 0.005f;
   //printf("distance %f\n", distance);
   if (distance < 1.0f - kSpeed / 6.0f) {
     return 1;
@@ -26,71 +27,77 @@ int collide_player_with_level(player* player, level* level) {
   //printf("y %f %d\n", player->y, (int) player->y);
 
   int collided = 0;
-  if (level->level[y][x] == '#') {
-    collided += collide_circles(player->x, player->y, x, y);
+  collided = collide_circles(player->x, player->y, x, y);
+  if (collided) {
+    if (level->level[y][x] != ' ') {
+      return level_collide(level, x, y);
+    }
   }
-  if (x - 1 > 0 && level->level[y][x - 1] == '#') {
-    collided += collide_circles(player->x, player->y, x - 1, y);
+  if (x - 1 > 0) {
+    collided = collide_circles(player->x, player->y, x - 1, y);
+    if (collided) {
+      if (level->level[y][x - 1] != ' ') {
+	return level_collide(level, x - 1, y);
+      }
+    }
   }
-  if (x + 1 < level->w && level->level[y][x + 1] == '#') {
-    collided += collide_circles(player->x, player->y, x + 1, y);
-  }
-  
-  if (y - 1 > 0 && level->level[y - 1][x] == '#') {
-    collided += collide_circles(player->x, player->y, x, y - 1);
-  }
-  if (y - 1 > 0 && x - 1 > 0 && level->level[y - 1][x - 1] == '#') {
-    collided += collide_circles(player->x, player->y, x - 1, y - 1);
-  }
-  if (y - 1 > 0 && x + 1 < level->w && level->level[y - 1][x + 1] == '#') {
-    collided += collide_circles(player->x, player->y, x + 1, y - 1);
+  if (x + 1 < level->w) {
+    collided = collide_circles(player->x, player->y, x + 1, y);
+    if (collided) {
+      if (level->level[y][x + 1] != ' ') {
+	return level_collide(level, x + 1, y);
+      }
+    }
   }
 
-  if (y + 1 < level->h && level->level[y + 1][x] == '#') {
-    collided += collide_circles(player->x, player->y, x, y + 1);
-  }
-  if (y + 1 < level->h && x - 1 > 0 && level->level[y + 1][x - 1] == '#') {
-    collided += collide_circles(player->x, player->y, x - 1, y + 1);
-  }
-  if (y + 1 < level->h && x + 1 < level->w && level->level[y + 1][x + 1] == '#') {
-    collided += collide_circles(player->x, player->y, x + 1, y + 1);
-  }
-  
-  return collided;
-  if (x > 0) {
-    if (level->level[y][x] == '#') {
-      if (1.0f - dx < 0.005f)
-	return 0;
-      return 1;
-    }
-    if (level->level[y][x - 1] == '#') {
-      if (1.0f - dx < 0.005f)
-	return 0;
-      return 1;
+  if (y - 1 > 0) {
+    collided = collide_circles(player->x, player->y, x, y - 1);
+    if (collided) {
+      if (level->level[y - 1][x] != ' ') {
+	return level_collide(level, x, y - 1);
+      }
     }
   }
-  if (x < level->w) {
-    if (level->level[y][x + 1] == '#') {
-      if (dx < 0.005f)
-	return 0;
-      return 1;
+  if (y - 1 > 0 && x - 1 > 0) {
+    collided = collide_circles(player->x, player->y, x - 1, y - 1);
+    if (collided) {
+      if (level->level[y - 1][x - 1] != ' ') {
+	return level_collide(level, x - 1, y - 1);
+      }
     }
   }
-  if (y >= 0) {
-    if (level->level[y][x] == '#') {
-      if (1.0f - dy < 0.005f)
-	return 0;
-      return 1;
+  if (y - 1 > 0 && x + 1 < level->w) {
+    collided = collide_circles(player->x, player->y, x + 1, y - 1);
+    if (collided) {
+      if (level->level[y - 1][x + 1] != ' ') {
+	return level_collide(level, x + 1, y - 1);
+      }
     }
   }
-  if (y < level->h) {
-    if (level->level[y + 1][x] == '#') {
-      if (dy < 0.005f)
-	return 0;
-      return 1;
+
+  if (y + 1 < level->h) {
+    collided = collide_circles(player->x, player->y, x, y + 1);
+    if (collided) {
+      if (level->level[y + 1][x] != ' ') {
+	return level_collide(level, x, y + 1);
+      }
     }
   }
-     
-  //  if (level->level[(int) player->y][(int) player->x] == '#');
+  if (y + 1 < level->h && x - 1 > 0) {
+    collided = collide_circles(player->x, player->y, x - 1, y + 1);
+    if (collided) {
+      if (level->level[y + 1][x - 1] != ' ') {
+	return level_collide(level, x - 1, y + 1);
+      }
+    }
+  }
+  if (y + 1 < level->h && x + 1 < level->w) {
+    collided = collide_circles(player->x, player->y, x + 1, y + 1);
+    if (collided) {
+      if (level->level[y + 1][x + 1] != ' ') {
+	return level_collide(level, x + 1, y + 1);
+      }
+    }
+  }
   return 0;
 }
